@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "gen-types": "supabase gen types typescript --project-id xluydegjfofnleyajejj --schema public > ./database.types.ts"
+    "gen-types": "supabase gen types typescript --project-id xluydegjfofnleyajejj --schema public > ./database.types.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
@@ -23,14 +25,26 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^4.1.2",
+    "@storybook/addon-a11y": "^10.0.8",
+    "@storybook/addon-docs": "^10.0.8",
+    "@storybook/addon-onboarding": "^10.0.8",
+    "@storybook/addon-vitest": "^10.0.8",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
+    "eslint-plugin-storybook": "^10.0.8",
     "postcss": "^8.5.6",
+    "storybook": "^10.0.8",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@storybook/nextjs-vite": "^10.0.8",
+    "vitest": "^4.0.10",
+    "playwright": "^1.56.1",
+    "@vitest/browser-playwright": "^4.0.10",
+    "@vitest/coverage-v8": "^4.0.10"
   }
 }
