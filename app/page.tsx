@@ -38,8 +38,8 @@ const tools = [
     title: 'Add Meal',
     description:
       'Log your meals and snacks to stay on top of your nutrition goals.',
-    href: '/dashboard', // пока можно вести на общий dashboard
-    button: 'Open Add Meal',
+    href: '/dashboard/meals', 
+    button: 'Open Add Meals',
     color: 'from-orange-400 to-amber-500',
   },
   {

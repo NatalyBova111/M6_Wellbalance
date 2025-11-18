@@ -56,33 +56,45 @@ export type Database = {
         Row: {
           brand: string | null
           calories_per_serving: number | null
+          carbs_per_serving: number | null
           created_at: string
+          fat_per_serving: number | null
           id: string
           is_public: boolean
+          macro_category: string | null
           name: string
           owner_id: string | null
+          protein_per_serving: number | null
           serving_qty: number
           serving_unit: string
         }
         Insert: {
           brand?: string | null
           calories_per_serving?: number | null
+          carbs_per_serving?: number | null
           created_at?: string
+          fat_per_serving?: number | null
           id?: string
           is_public?: boolean
+          macro_category?: string | null
           name: string
           owner_id?: string | null
+          protein_per_serving?: number | null
           serving_qty?: number
           serving_unit?: string
         }
         Update: {
           brand?: string | null
           calories_per_serving?: number | null
+          carbs_per_serving?: number | null
           created_at?: string
+          fat_per_serving?: number | null
           id?: string
           is_public?: boolean
+          macro_category?: string | null
           name?: string
           owner_id?: string | null
+          protein_per_serving?: number | null
           serving_qty?: number
           serving_unit?: string
         }
