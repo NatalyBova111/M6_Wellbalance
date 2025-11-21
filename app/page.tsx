@@ -108,24 +108,30 @@ export default function HomePage() {
         </section>
 
         {/* AI Chat Assistant — теперь ниже */}
-        <section className="flex justify-center mt-4">
-          <div className="flex w-full max-w-xl flex-col items-center rounded-3xl bg-white/90 p-8 text-center shadow-md shadow-emerald-100 ring-1 ring-emerald-100/70 backdrop-blur-sm">
-            <div className="mb-3 h-1.5 w-20 rounded-full bg-linear-to-r from-purple-300 to-indigo-300" />
-            <h2 className="mb-2 text-xl font-semibold text-slate-900">
-              AI Chat Assistant
-            </h2>
-            <p className="mb-6 text-sm text-slate-600">
-              Ask anything about nutrition, planning meals, hydration, sleep or
-              healthy habits — the assistant is ready to help.
-            </p>
-            <Link
-              href="/chat"
-              className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-purple-500 to-indigo-500 px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-200/70 transition hover:shadow-lg"
-            >
-              Open Chat
-            </Link>
-          </div>
-        </section>
+{/* AI Chat Assistant link block */}
+<section>
+  <Link href="/chat">
+    <div className="mt-6 flex items-center justify-between rounded-2xl bg-white/90 p-4 shadow-md ring-1 ring-emerald-100 hover:bg-emerald-50 transition">
+      <div className="flex items-center gap-3">
+        <span className="text-xl text-emerald-600">💬</span>
+        <div>
+          <h3 className="text-sm font-semibold text-emerald-800">
+            AI Chat Assistant
+          </h3>
+          <p className="text-xs text-slate-600">
+            Tap to start chatting instantly.
+          </p>
+        </div>
+      </div>
+
+      <span className="text-lg text-emerald-600">→</span>
+    </div>
+  </Link>
+</section>
+
+
+
+
       </main>
     </div>
   );
