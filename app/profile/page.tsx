@@ -152,33 +152,40 @@ export default async function ProfilePage() {
               </div>
             </div>
           </div>
+{/* KEEP GROWING — обновлённый и стильный */}
+<div className="rounded-3xl bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100 p-6 shadow-sm border border-emerald-100">
 
-          {/* --------------------------------------------------- */}
-          {/* 3. KEEP GROWING                                    */}
-          {/* --------------------------------------------------- */}
-          <div className="rounded-3xl bg-emerald-50/80 p-6 text-xs text-emerald-900 shadow-sm">
-            <h2 className="text-sm font-semibold text-emerald-950">
-              Keep growing!
-            </h2>
-            <p className="mt-2 text-[11px] text-emerald-900/90">
-              Your personalized goals support your wellness journey.
-            </p>
+  <div className="flex items-center gap-3 mb-3">
+    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-200/50 shadow-inner">
+      {/* Иконка роста / прогресса */}
+      <span className="text-emerald-800 text-xl">🌱</span>
+    </div>
+    <h2 className="text-base font-semibold text-emerald-900">
+      Keep growing!
+    </h2>
+  </div>
 
-            <ul className="mt-3 space-y-2 text-[11px]">
-              <li className="flex gap-2">
-                <span className="mt-[2px] text-emerald-500">•</span>
-                <span>Stay consistent with your daily tracking.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-[2px] text-emerald-500">•</span>
-                <span>Adjust goals as your needs change.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-[2px] text-emerald-500">•</span>
-                <span>Listen to your body and prioritize balance.</span>
-              </li>
-            </ul>
-          </div>
+  <p className="text-[13px] text-emerald-900/80 leading-relaxed">
+    Your personalized goals support your wellness journey. Keep moving
+    forward — small steps lead to big progress.
+  </p>
+
+  <ul className="mt-4 space-y-2 text-[13px] text-emerald-800/90">
+    <li className="flex gap-2">
+      <span className="text-emerald-500 text-lg">•</span>
+      <span>Stay consistent with your daily tracking.</span>
+    </li>
+    <li className="flex gap-2">
+      <span className="text-emerald-500 text-lg">•</span>
+      <span>Adjust goals as your needs change.</span>
+    </li>
+    <li className="flex gap-2">
+      <span className="text-emerald-500 text-lg">•</span>
+      <span>Listen to your body and prioritize balance.</span>
+    </li>
+  </ul>
+</div>
+
         </section>
       </main>
     </div>

@@ -3,6 +3,8 @@ import { createSupabaseServer } from "@/lib/supabaseServer";
 import AddMealClient, { type FoodForClient } from "./AddMealClient";
 import type { Database } from "@/database.types";
 import type { FoodCategory } from "@/components/ui/food-card";
+import AddCustomFoodCard from "./AddCustomFoodCard";
+
 
 
 type FoodRow = Database["public"]["Tables"]["foods"]["Row"];
@@ -98,8 +100,11 @@ export default async function MealsPage() {
             Choose foods to add to your daily log.
           </p>
         </header>
+       
 
         <AddMealClient foods={foodsForClient} />
+
+         <AddCustomFoodCard />
       </div>
     </main>
   );
