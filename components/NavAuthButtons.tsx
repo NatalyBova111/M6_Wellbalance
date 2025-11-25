@@ -1,3 +1,4 @@
+// NavAuthButtons.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,12 +14,15 @@ type User = {
 export function NavAuthButtons() {
   const router = useRouter();
 
-  // undefined = ещё загружаем, null = не залогинен, объект = залогинен
+  // `undefined` → still loading
+  // `null` → not authenticated
+  // object → authenticated user
   const [user, setUser] = useState<User | null | undefined>(undefined);
 
   useEffect(() => {
     let isMounted = true;
 
+    // Load user session on component mount
     async function loadUser() {
       const { data } = await supabaseBrowser.auth.getUser();
       if (!isMounted) return;
@@ -27,11 +31,11 @@ export function NavAuthButtons() {
 
     loadUser();
 
-    const {
-      data: subscription,
-    } = supabaseBrowser.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    // Subscribe to auth state changes
+    const { data: subscription } =
+      supabaseBrowser.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+      });
 
     return () => {
       isMounted = false;
@@ -39,13 +43,14 @@ export function NavAuthButtons() {
     };
   }, []);
 
+  // Handle logout and refresh navigation state
   async function handleLogout() {
     await supabaseBrowser.auth.signOut();
     router.push("/");
     router.refresh();
   }
 
-  // Пока загружаемся — можно показать кнопку Sign in как дефолт
+  // While session is loading, display the default Sign-in button
   if (user === undefined) {
     return (
       <Link
@@ -57,7 +62,7 @@ export function NavAuthButtons() {
     );
   }
 
-  // Не залогинен
+  // Not authenticated → show Sign-in button
   if (!user) {
     return (
       <Link
@@ -69,7 +74,7 @@ export function NavAuthButtons() {
     );
   }
 
-  // Залогинен → показываем Logout
+  // Authenticated → show Logout button
   return (
     <button
       type="button"

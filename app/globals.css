@@ -1,9 +1,10 @@
 @import 'tailwindcss';
-
 @plugin 'tailwindcss-animate';
 
+/* Define a `dark` variant using custom selector */
 @custom-variant dark (&:is(.dark *));
 
+/* Theme variables and animation keyframes */
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -32,13 +33,16 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
+  /* Radius scale */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
+  /* Accordion animation tokens */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
+  /* Accordion keyframes */
   @keyframes accordion-down {
     from {
       height: 0;
@@ -58,12 +62,11 @@
 }
 
 /*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Compatibility shim for Tailwind CSS v4:
+  The default border color changed to `currentcolor`.
+  These base rules reproduce Tailwind v3’s default behavior.
+  Any component depending on old defaults should explicitly set a border color
+  if these rules are removed in the future.
 */
 @layer base {
   *,
@@ -76,7 +79,7 @@
 }
 
 @layer utilities {
-  /* Твои дополнительные стили */
+  /* Global page-level utility styles */
 
   html,
   body {
@@ -94,8 +97,7 @@
   }
 }
 
-
-
+/* Light mode color palette */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -124,6 +126,8 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
+  /* Dark mode palette */
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -152,8 +156,7 @@
   }
 }
 
-
-
+/* Base layer applying semantic colors via Tailwind CSS variables */
 @layer base {
   * {
     @apply border-border;

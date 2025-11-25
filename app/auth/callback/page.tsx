@@ -8,7 +8,8 @@ export default function AuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // В демо просто отправляем пользователя на дашборд
+      // After successful authentication, redirect the user to the dashboard.
+    // This acts as a placeholder callback handler for auth providers.
     router.replace('/dashboard');
   }, [router]);
 

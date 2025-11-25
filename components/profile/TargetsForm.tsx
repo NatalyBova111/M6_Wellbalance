@@ -20,6 +20,7 @@ export function TargetsForm({ initialTargets }: Props) {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Update individual numeric fields while sanitizing invalid values
   function updateField<K extends keyof Targets>(key: K, value: string) {
     const num = Number(value);
     setValues((prev) => ({
@@ -28,6 +29,7 @@ export function TargetsForm({ initialTargets }: Props) {
     }));
   }
 
+  // Submit updated target values to Supabase
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -35,7 +37,7 @@ export function TargetsForm({ initialTargets }: Props) {
     setError(null);
 
     try {
-      // получаем текущего юзера на клиенте
+      // Retrieve the current authenticated user on the client
       const {
         data: { user },
         error: userError,
@@ -46,8 +48,8 @@ export function TargetsForm({ initialTargets }: Props) {
         return;
       }
 
-      // ВРЕМЕННО: обходим строгие типы Database, потому что
-      // таблица user_targets ещё не добавлена в database.types.ts
+      // Temporary type override because user_targets
+      // is not yet included in database.types.ts
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const client: any = supabaseBrowser;
 
@@ -71,11 +73,8 @@ export function TargetsForm({ initialTargets }: Props) {
       }
 
       setMessage("Targets saved successfully.");
-    
-    
     } catch (err: unknown) {
       console.error(err);
-
       if (err instanceof Error) {
         setError(err.message ?? "Unexpected error");
       } else {
@@ -84,14 +83,13 @@ export function TargetsForm({ initialTargets }: Props) {
     } finally {
       setSaving(false);
     }
-
-
-
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-sm">
+      {/* Four input fields for daily nutrition targets */}
       <div className="grid gap-4 md:grid-cols-2">
+        {/* Daily calories */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-slate-700">
             Daily calories (kcal)
@@ -105,6 +103,7 @@ export function TargetsForm({ initialTargets }: Props) {
           />
         </div>
 
+        {/* Protein */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-slate-700">
             Protein per day (g)
@@ -118,6 +117,7 @@ export function TargetsForm({ initialTargets }: Props) {
           />
         </div>
 
+        {/* Carbs */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-slate-700">
             Carbs per day (g)
@@ -131,6 +131,7 @@ export function TargetsForm({ initialTargets }: Props) {
           />
         </div>
 
+        {/* Fat */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-slate-700">
             Fat per day (g)
@@ -145,6 +146,7 @@ export function TargetsForm({ initialTargets }: Props) {
         </div>
       </div>
 
+      {/* Save button */}
       <button
         type="submit"
         disabled={saving}
@@ -153,6 +155,7 @@ export function TargetsForm({ initialTargets }: Props) {
         {saving ? "Saving..." : "Save targets"}
       </button>
 
+      {/* Status messages */}
       {message && (
         <p className="text-xs text-emerald-600 mt-2">{message}</p>
       )}

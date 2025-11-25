@@ -1,3 +1,4 @@
+// ProfileUserInfoForm.tsx
 "use client";
 
 import { useState, type FormEvent } from "react";
@@ -17,6 +18,7 @@ export function ProfileUserInfoForm({
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle submission of updated profile information
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -46,8 +48,9 @@ export function ProfileUserInfoForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-      {/* имя + email */}
+      {/* Full name and email fields */}
       <div className="grid gap-4 md:grid-cols-2">
+        {/* Full name input */}
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-slate-700">
             Full name
@@ -66,6 +69,7 @@ export function ProfileUserInfoForm({
           </div>
         </div>
 
+        {/* Read-only email display */}
         <div className="space-y-1.5">
           <label className="text-xs font-medium text-slate-700">
             Email address
@@ -84,6 +88,7 @@ export function ProfileUserInfoForm({
         </div>
       </div>
 
+      {/* Submit button and status messages */}
       <button
         type="submit"
         disabled={saving}

@@ -17,9 +17,8 @@ export type DailyTotals = {
   fat_g: number;
 };
 
-
 // -----------------------------
-// Вспомогательные функции
+// Helper functions
 // -----------------------------
 
 type SearchParamsShape = { date?: string };
@@ -44,7 +43,7 @@ function clampPercent(value: number): number {
 }
 
 // -----------------------------
-// Основная страница Dashboard
+// Main Dashboard page
 // Next 16 → searchParams: Promise
 // -----------------------------
 
@@ -55,7 +54,7 @@ export default async function DashboardPage({
 }) {
   const supabase = await createSupabaseServer();
 
-  // 👉 Проверяем авторизацию
+  // Check authentication state
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -66,11 +65,11 @@ export default async function DashboardPage({
 
   const userId = user.id;
 
-  // ⏳ Ждём searchParams
+  // Await searchParams in the Next 16 route handler
   const resolved = await searchParams;
   const selectedDateISO = normalizeDate(resolved);
 
-  // 1) Загружаем дневной лог
+  // 1) Load daily log for the selected date
   const { data, error } = await supabase
     .from("daily_logs")
     .select("*")
@@ -89,9 +88,9 @@ export default async function DashboardPage({
     fat_g: Number(data?.fat_g ?? 0),
   };
 
-   // 2) Загружаем персональные таргеты пользователя
-  // Таблица user_targets пока не описана в database.types.ts,
-  // поэтому приводим supabase к any только для этого запроса.
+  // 2) Load user-specific nutrition targets
+  // The user_targets table is not yet described in database.types.ts,
+  // so Supabase is temporarily cast to any for this query only.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: targetsRow, error: targetsError } = await (supabase as any)
     .from("user_targets")
@@ -108,16 +107,7 @@ export default async function DashboardPage({
   const CARBS_TARGET = targetsRow?.carbs_g ?? 200;
   const FAT_TARGET = targetsRow?.fat_g ?? 60;
 
-
-
-
-
-
-
-
-
-
-  // 3) Расчёты прогресса
+  // 3) Progress calculations
   const caloriesUsed = log.total_calories;
   const caloriesLeft = Math.max(CALORIES_TARGET - caloriesUsed, 0);
 
@@ -134,7 +124,7 @@ export default async function DashboardPage({
   return (
     <div className="min-h-screen bg-emerald-50/40">
       <main className="mx-auto max-w-5xl px-4 py-10">
-        {/* Today Progress — уже на основе персональной цели по калориям */}
+        {/* Today Progress based on user-specific calorie target */}
         <TodayProgressHeader
           dateISO={selectedDateISO}
           log={log}
@@ -151,7 +141,7 @@ export default async function DashboardPage({
           </Link>
         </div>
 
-        {/* Основной контент */}
+        {/* Main content */}
         <div className="mt-8 space-y-8">
           <section className="grid gap-6 lg:grid-cols-[2fr,1.4fr]">
             {/* Total calories */}
@@ -183,7 +173,7 @@ export default async function DashboardPage({
               </div>
 
               <div className="mt-4 border-t border-slate-100 pt-4 text-xs text-slate-500">
-                Meals you add on the{" "}
+                Meals added on the{" "}
                 <Link
                   href="/dashboard/meals"
                   className="font-medium text-emerald-600 underline-offset-2 hover:underline"
@@ -201,7 +191,7 @@ export default async function DashboardPage({
               </h2>
 
               <div className="mt-4 grid gap-6 lg:grid-cols-2">
-                {/* Ring */}
+                {/* Ring overview */}
                 <div className="flex flex-col items-center justify-center">
                   <div className="relative flex h-40 w-40 items-center justify-center rounded-full bg-emerald-50">
                     <div className="h-28 w-28 rounded-full border-[10px] border-emerald-400/70 border-t-amber-400/80 border-r-rose-400/80" />
@@ -214,11 +204,11 @@ export default async function DashboardPage({
                   </div>
                   <p className="mt-3 max-w-xs text-center text-[11px] text-slate-500">
                     The ring shows the total amount of protein, carbs and fat
-                    eaten this day.
+                    eaten on this day.
                   </p>
                 </div>
 
-                {/* Bars */}
+                {/* Progress bars for each macronutrient */}
                 <div className="space-y-4">
                   {/* Protein */}
                   <div>
@@ -274,7 +264,7 @@ export default async function DashboardPage({
             </section>
           </section>
 
-          {/* Future blocks */}
+          {/* Placeholder sections for future features */}
           <section className="grid gap-6 md:grid-cols-2">
             <div className="rounded-3xl bg-white p-6 shadow-md">
               <h2 className="text-sm font-semibold text-slate-900">

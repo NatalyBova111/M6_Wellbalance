@@ -5,19 +5,21 @@ import { useRouter } from 'next/navigation';
 
 import { supabaseBrowser } from '@/lib/supabaseBrowser';
 
-
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-
 
 export default function LoginPage() {
   const router = useRouter();
 
+  // Local state for login credentials
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // UI state for loading and errors
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Handles user login via Supabase email/password auth
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrorMessage(null);
@@ -25,17 +27,17 @@ export default function LoginPage() {
 
     try {
       const { error } = await supabaseBrowser.auth.signInWithPassword({
-
         email,
         password,
       });
 
+      // Display authentication error if provided by Supabase
       if (error) {
         setErrorMessage(error.message);
         return;
       }
 
-      // успешный логин -> на dashboard
+      // Successful login routes to the dashboard
       router.push('/dashboard');
     } finally {
       setLoading(false);
@@ -45,27 +47,29 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-linear-to-br from-green-50 via-emerald-50/40 to-teal-50/30 flex items-center justify-center px-4">
       <div className="w-full max-w-4xl bg-white/80 backdrop-blur-xl shadow-xl rounded-3xl border border-emerald-100 grid md:grid-cols-2 overflow-hidden">
-        {/* Левая часть - картинка/текст, только на md+ */}
+        {/* Left section: shown only on medium screens and above */}
         <div className="bg-linear-to-br from-emerald-100 via-emerald-50 to-white p-8 md:p-10 hidden md:flex flex-col justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-emerald-700 shadow-xs mb-4">
               <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
               Wellness Tracker
             </div>
+
             <h1 className="text-2xl md:text-3xl font-semibold text-emerald-900 mb-3">
               Welcome back
             </h1>
+
             <p className="text-sm text-emerald-800/80">
-              Continue your wellness journey and keep an eye on your daily
-              habits.
+              Continue your wellness journey and monitor your daily habits.
             </p>
           </div>
+
           <p className="mt-8 text-xs text-emerald-700/80">
-            Tip: you can always reset your password from the login form.
+            Tip: passwords can be reset using the link in the login form.
           </p>
         </div>
 
-        {/* Правая часть — форма логина */}
+        {/* Right section — login form */}
         <div className="p-8 md:p-10">
           <div className="flex justify-between items-center mb-6">
             <div>
@@ -76,6 +80,7 @@ export default function LoginPage() {
                 Sign in to WellBalance
               </h2>
             </div>
+
             <div className="inline-flex rounded-full bg-slate-100 p-1 text-xs">
               <Button
                 variant="ghost"
@@ -95,6 +100,7 @@ export default function LoginPage() {
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Email field */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-slate-700">
                 Email
@@ -108,6 +114,7 @@ export default function LoginPage() {
               />
             </div>
 
+            {/* Password field */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-slate-700">
                 Password
@@ -121,10 +128,12 @@ export default function LoginPage() {
               />
             </div>
 
+            {/* Error message */}
             {errorMessage && (
               <p className="text-sm text-red-600">{errorMessage}</p>
             )}
 
+            {/* Submit button */}
             <Button
               type="submit"
               disabled={loading}
@@ -135,7 +144,7 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-4 text-xs text-slate-500">
-            Don&apos;t have an account?{' '}
+            Don&apos;t have an account?{" "}
             <button
               type="button"
               onClick={() => router.push('/signup')}

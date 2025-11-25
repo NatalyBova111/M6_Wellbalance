@@ -12,7 +12,7 @@ type MacroCategory =
 export async function POST(req: Request) {
   const supabase = await createSupabaseServer();
 
-  // если хочешь, можно использовать user.id как owner_id
+  // Retrieve the currently authenticated user (if any)
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -39,6 +39,7 @@ export async function POST(req: Request) {
     fatPerServing?: number;
   };
 
+  // Basic validation: name and category are mandatory
   if (!name || !macroCategory) {
     return NextResponse.json(
       { error: 'Name and category are required.' },
@@ -46,8 +47,10 @@ export async function POST(req: Request) {
     );
   }
 
+  // Payload to insert into the "foods" table
   const insertPayload = {
-    owner_id: user?.id ?? null, // можно потом фильтровать по owner_id, если понадобится
+    // Owner is linked to the authenticated user if available
+    owner_id: user?.id ?? null,
     name,
     brand: null,
     serving_unit: servingUnit ?? 'g',
@@ -57,7 +60,8 @@ export async function POST(req: Request) {
     carbs_per_serving: carbsPerServing ?? null,
     fat_per_serving: fatPerServing ?? null,
     is_public: true,
-    macro_category: macroCategory, // ← ВАЖНО: именно сюда идёт protein / carbs / fat / vegetables / fruits
+    // Macro category stored as one of: protein / carbs / fat / vegetables / fruits
+    macro_category: macroCategory,
   };
 
   const { data, error } = await supabase
@@ -66,6 +70,7 @@ export async function POST(req: Request) {
     .select()
     .maybeSingle();
 
+  // Handle insertion failure
   if (error) {
     console.error('Failed to insert custom food:', error);
     return NextResponse.json(
@@ -74,5 +79,6 @@ export async function POST(req: Request) {
     );
   }
 
+  // Return the created food item
   return NextResponse.json({ food: data }, { status: 201 });
 }

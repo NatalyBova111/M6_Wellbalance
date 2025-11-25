@@ -1,5 +1,4 @@
 // app/api/add-meal-item/route.ts
-// app/api/add-meal-item/route.ts
 import { NextResponse } from "next/server";
 import { createSupabaseServer } from "@/lib/supabaseServer";
 
@@ -15,7 +14,7 @@ type AddMealBody = {
 export async function POST(req: Request) {
   const supabase = await createSupabaseServer();
 
-  // 🔐 Получаем текущего пользователя из сессии
+  // 🔐 Get the current authenticated user from the session
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -29,6 +28,7 @@ export async function POST(req: Request) {
 
   const userId = user.id;
 
+  // Parse request body
   const body = (await req.json()) as AddMealBody;
   const {
     foodId,
@@ -39,9 +39,10 @@ export async function POST(req: Request) {
     fatTotal,
   } = body;
 
-  const today = new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+  // Determine today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().slice(0, 10);
 
-  // 1) Читаем существующую запись за сегодня (если есть)
+  // 1) Read existing daily log for this user for today (if it exists)
   const { data: existing, error: selectError } = await supabase
     .from("daily_logs")
     .select("*")
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
     .eq("log_date", today)
     .maybeSingle();
 
+  // If there is an unexpected error, return 500
   if (selectError && selectError.code !== "PGRST116") {
     console.error("Failed to fetch daily_log:", selectError);
     return NextResponse.json(
@@ -57,13 +59,13 @@ export async function POST(req: Request) {
     );
   }
 
-  // 2) Сколько добавляем (int4 → округляем)
+  // 2) Convert totals to integers (Postgres int4)
   const addCalories = Math.round(caloriesTotal);
   const addProtein = Math.round(proteinTotal);
   const addCarbs = Math.round(carbsTotal);
   const addFat = Math.round(fatTotal);
 
-  // 3) Новые суммарные значения за день
+  // 3) Calculate updated totals for today (existing + new values)
   const newTotals = {
     total_calories: (existing?.total_calories ?? 0) + addCalories,
     protein_g: (existing?.protein_g ?? 0) + addProtein,
@@ -71,7 +73,8 @@ export async function POST(req: Request) {
     fat_g: (existing?.fat_g ?? 0) + addFat,
   };
 
-  // 4) upsert по паре (user_id, log_date)
+  // 4) Upsert row into daily_logs for the pair (user_id, log_date)
+  // If the row exists → update. If not → create a new row.
   const { data: logs, error: logError } = await supabase
     .from("daily_logs")
     .upsert(
@@ -87,6 +90,7 @@ export async function POST(req: Request) {
     )
     .select("*");
 
+  // Handle failure
   if (logError || !logs || !logs[0]) {
     console.error("Failed to update daily_logs:", logError);
     return NextResponse.json(
@@ -97,6 +101,7 @@ export async function POST(req: Request) {
 
   const dailyLog = logs[0];
 
+  // Log operation for debugging
   console.log("Meal item added:", {
     userId,
     foodId,
@@ -105,5 +110,6 @@ export async function POST(req: Request) {
     dailyLogId: dailyLog.id,
   });
 
+  // Return updated daily log
   return NextResponse.json({ ok: true, dailyLog });
 }

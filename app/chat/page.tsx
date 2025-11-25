@@ -31,6 +31,7 @@ type ToolResultPart = {
   result: unknown;
 };
 
+// Type guard for tool result message parts
 function isToolResultPart(part: { type: string }): part is ToolResultPart {
   return part.type === 'tool-result';
 }
@@ -39,6 +40,7 @@ export default function ChatPage() {
   const [tone, setTone] = useState<Tone>('neutral');
   const [input, setInput] = useState('');
 
+  // Configure chat hook with custom transport and tone parameter
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
@@ -46,6 +48,7 @@ export default function ChatPage() {
     }),
   });
 
+  // Handle sending of a new chat message
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -53,11 +56,12 @@ export default function ChatPage() {
     setInput('');
   };
 
+  // Handle changes in tone selector
   const handleToneChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setTone(e.target.value as Tone);
   };
 
-  // красивый рендер для результата погоды
+  // Render helper for weather tool result
   const renderWeatherResult = (result?: WeatherResult): ReactNode => {
     if (!result) return null;
 
@@ -100,7 +104,7 @@ export default function ChatPage() {
     );
   };
 
-  // красивый рендер для результата base64
+  // Render helper for Base64 tool result
   const renderBase64Result = (result?: Base64Result): ReactNode => {
     if (!result) return null;
 
@@ -132,7 +136,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col max-w-2xl mx-auto my-6 border rounded-2xl shadow-sm bg-white/80">
-      {/* панель настроек */}
+      {/* Settings panel: title and tone selector */}
       <div className="flex items-center justify-between gap-3 border-b px-4 py-2">
         <h1 className="text-sm font-semibold text-slate-800">
           AI Chat Assistant
@@ -153,7 +157,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* сообщения */}
+      {/* Messages list */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((m) => (
           <div
@@ -170,12 +174,12 @@ export default function ChatPage() {
               }`}
             >
               {m.parts.map((part, i) => {
-                // обычный текст
+                // Plain text message content
                 if (part.type === 'text') {
                   return <span key={i}>{part.text}</span>;
                 }
 
-                // результат tool'а
+                // Tool result content rendered in a custom way
                 if (isToolResultPart(part)) {
                   const { toolName, result } = part;
 
@@ -202,16 +206,17 @@ export default function ChatPage() {
           </div>
         ))}
 
+        {/* Empty state when no messages have been sent yet */}
         {messages.length === 0 && (
           <div className="text-sm text-slate-500">
-            Choose a tone above and ask me anything ✨
+            Choose a tone above and ask anything ✨
             <br />
-            You can also ask about weather or Base64 encoding.
+            Weather queries and Base64 encoding/decoding are also supported.
           </div>
         )}
       </div>
 
-      {/* форма ввода */}
+      {/* Input form for new messages */}
       <form
         onSubmit={handleSubmit}
         className="flex gap-2 border-t p-3 bg-white/70"

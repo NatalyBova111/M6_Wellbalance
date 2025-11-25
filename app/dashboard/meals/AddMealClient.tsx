@@ -6,7 +6,7 @@ import { FoodCard, type FoodCategory } from "@/components/ui/food-card";
 export type FoodForClient = {
   id: string;
   name: string;
-  // категория может быть null, если в БД нет macro_category
+  // Category may be null if there is no macro_category in the database
   category: FoodCategory | null;
   servingQty: number;
   servingUnit: string;
@@ -20,9 +20,10 @@ type Props = {
   foods: FoodForClient[];
 };
 
-// строго: ключи — это именно FoodCategory
+// Strongly typed grouping: keys are exactly FoodCategory values
 type GroupedFoods = Record<FoodCategory, FoodForClient[]>;
 
+// Helper to create an empty grouped structure
 function createEmptyGroups(): GroupedFoods {
   return {
     Protein: [],
@@ -33,11 +34,12 @@ function createEmptyGroups(): GroupedFoods {
   };
 }
 
+// Group foods by their macro category, skipping items without a category
 function groupByCategory(foods: FoodForClient[]): GroupedFoods {
   const groups = createEmptyGroups();
 
   for (const food of foods) {
-    if (!food.category) continue; // без категории не показываем
+    if (!food.category) continue; // Hide items with no category
     groups[food.category].push(food);
   }
 
@@ -49,12 +51,14 @@ export default function AddMealClient({ foods }: Props) {
   const [selectedFood, setSelectedFood] = useState<FoodForClient | null>(null);
   const [grams, setGrams] = useState<string>("100");
 
+  // Filter foods by search query (case-insensitive match on name)
   const filteredFoods = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return foods;
     return foods.filter((f) => f.name.toLowerCase().includes(q));
   }, [foods, query]);
 
+  // Group filtered foods by category for display
   const grouped = useMemo(
     () => groupByCategory(filteredFoods),
     [filteredFoods]
@@ -66,6 +70,7 @@ export default function AddMealClient({ foods }: Props) {
       ? gramsNumber / selectedFood.servingQty
       : 0;
 
+  // Derived totals for calories and macronutrients based on the chosen amount
   const caloriesTotal = selectedFood
     ? Math.round(selectedFood.caloriesPerServing * factor)
     : 0;
@@ -81,7 +86,7 @@ export default function AddMealClient({ foods }: Props) {
 
   return (
     <>
-      {/* Поиск */}
+      {/* Search input */}
       <div className="mb-6">
         <input
           type="search"
@@ -92,7 +97,7 @@ export default function AddMealClient({ foods }: Props) {
         />
       </div>
 
-      {/* Группы категорий с карточками */}
+      {/* Category groups with food cards */}
       <div className="space-y-8">
         {(Object.keys(grouped) as FoodCategory[]).map((category) => {
           const items = grouped[category];
@@ -128,7 +133,7 @@ export default function AddMealClient({ foods }: Props) {
         })}
       </div>
 
-      {/* МОДАЛЬНОЕ ОКНО добавления */}
+      {/* Modal dialog for adding a selected food to today's log */}
       {selectedFood && (
         <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
@@ -157,7 +162,7 @@ export default function AddMealClient({ foods }: Props) {
               </button>
             </div>
 
-            {/* Поле ввода количества */}
+            {/* Input for the amount in units (e.g. grams) */}
             <div className="mb-4 flex items-center gap-3">
               <div className="text-xs text-slate-500">
                 Amount ({selectedFood.servingUnit}):
@@ -171,7 +176,7 @@ export default function AddMealClient({ foods }: Props) {
               />
             </div>
 
-            {/* Итоги по калориям и макросам */}
+            {/* Summary of calories and macronutrients for the selected amount */}
             <div className="mb-4 grid grid-cols-2 gap-4 text-xs">
               <div className="rounded-2xl bg-emerald-50 p-3">
                 <div className="text-[11px] uppercase tracking-wide text-emerald-600">
@@ -207,7 +212,7 @@ export default function AddMealClient({ foods }: Props) {
               </div>
             </div>
 
-            {/* Кнопки */}
+            {/* Action buttons */}
             <div className="flex justify-end gap-3">
               <button
                 type="button"

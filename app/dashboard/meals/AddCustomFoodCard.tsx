@@ -5,6 +5,7 @@ import { FormEvent, useState } from 'react';
 type MacroCategory = 'protein' | 'carbs' | 'fat' | 'vegetables' | 'fruits';
 
 export default function AddCustomFoodCard() {
+  // Form state for all input fields
   const [name, setName] = useState('');
   const [category, setCategory] = useState<MacroCategory>('protein');
   const [servingQty, setServingQty] = useState('100');
@@ -13,9 +14,12 @@ export default function AddCustomFoodCard() {
   const [protein, setProtein] = useState('');
   const [carbs, setCarbs] = useState('');
   const [fat, setFat] = useState('');
+
+  // UI state for submission logic
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
+  // Handles form submission and sending data to the API
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
@@ -41,12 +45,13 @@ export default function AddCustomFoodCard() {
 
       const data = await res.json();
 
+      // Handle API failure
       if (!res.ok) {
         setStatusMessage(data.error ?? 'Failed to save product.');
       } else {
         setStatusMessage('Product saved ✅');
 
-        // очистить форму
+        // Reset the form after a successful submission
         setName('');
         setCategory('protein');
         setServingQty('100');
@@ -56,8 +61,8 @@ export default function AddCustomFoodCard() {
         setCarbs('');
         setFat('');
 
-        // чтобы новый продукт появился в списке — просто перезагрузим страницу
-        // (можно заменить на мягкий refresh через router.refresh(), если захочешь)
+        // Reload the page to refresh the product list
+        // (could be replaced with router.refresh() if client-side refresh is preferred)
         window.location.reload();
       }
     } catch (err) {
@@ -68,6 +73,7 @@ export default function AddCustomFoodCard() {
     }
   };
 
+  // Macro category selection configuration
   const categories: { key: MacroCategory; label: string; icon: string }[] = [
     { key: 'protein', label: 'Protein', icon: '💪' },
     { key: 'carbs', label: 'Carbs', icon: '🍞' },
@@ -78,6 +84,7 @@ export default function AddCustomFoodCard() {
 
   return (
     <section className="rounded-3xl bg-white p-6 shadow-md mt-8">
+      {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
           🥗
@@ -92,8 +99,9 @@ export default function AddCustomFoodCard() {
         </div>
       </div>
 
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-        {/* Название */}
+        {/* Product name */}
         <div className="space-y-1">
           <label className="block text-[11px] font-medium text-slate-700">
             Product name
@@ -108,7 +116,7 @@ export default function AddCustomFoodCard() {
           />
         </div>
 
-        {/* Категория */}
+        {/* Category selector */}
         <div className="space-y-1">
           <label className="block text-[11px] font-medium text-slate-700">
             Category
@@ -132,7 +140,7 @@ export default function AddCustomFoodCard() {
           </div>
         </div>
 
-        {/* Порция */}
+        {/* Serving size inputs */}
         <div className="grid gap-3 sm:grid-cols-[2fr,1fr]">
           <div className="space-y-1">
             <label className="block text-[11px] font-medium text-slate-700">
@@ -161,7 +169,7 @@ export default function AddCustomFoodCard() {
           </div>
         </div>
 
-        {/* Макросы */}
+        {/* Macronutrient inputs */}
         <div className="grid gap-3 sm:grid-cols-4">
           <div className="space-y-1">
             <label className="block text-[11px] font-medium text-slate-700">
@@ -217,7 +225,7 @@ export default function AddCustomFoodCard() {
           </div>
         </div>
 
-        {/* Статус + кнопка */}
+        {/* Status message + submit button */}
         <div className="flex items-center justify-between pt-2">
           <div className="text-[11px]">
             {statusMessage && (
@@ -232,6 +240,7 @@ export default function AddCustomFoodCard() {
               </span>
             )}
           </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
