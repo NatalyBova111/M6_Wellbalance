@@ -1,11 +1,12 @@
 erDiagram
   auth_users ||--|| profiles : "1-1 (via id)"
-  profiles ||--o{ daily_logs : has
-  profiles ||--o{ meals : has
-  profiles ||--o{ water_intake : has
-  profiles ||--o{ sleep_logs : has
-  meals ||--o{ meal_items : has
-  foods ||--o{ meal_items : referenced_by
+  profiles   ||--o{ daily_logs   : has
+  profiles   ||--o{ meals        : has
+  profiles   ||--o{ water_intake : has
+  profiles   ||--o{ sleep_logs   : has
+  profiles   ||--o{ user_targets : has
+  meals      ||--o{ meal_items   : has
+  foods      ||--o{ meal_items   : referenced_by
 
   profiles {
     uuid id PK FK "-> auth.users.id"
@@ -17,7 +18,7 @@ erDiagram
 
   daily_logs {
     uuid id PK
-    uuid user_id FK
+    uuid user_id FK "-> profiles.id"
     date log_date
     int total_calories
     int protein_g
@@ -26,13 +27,12 @@ erDiagram
     unique(user_id, log_date)
   }
 
-  meals {
-    uuid id PK
-    uuid user_id FK
-    uuid log_id FK "-> daily_logs.id"
-    text meal_type
-    text note
-    timestamptz created_at
+  user_targets {
+    uuid user_id PK FK "-> profiles.id"
+    int daily_calories
+    int protein_g
+    int carbs_g
+    int fat_g
   }
 
   foods {
@@ -43,28 +43,41 @@ erDiagram
     text serving_unit
     numeric serving_qty
     int calories_per_serving
+    int protein_per_serving
+    int carbs_per_serving
+    int fat_per_serving
+    text macro_category
     bool is_public
+    timestamptz created_at
+  }
+
+  meals {
+    uuid id PK
+    uuid user_id FK "-> profiles.id"
+    uuid log_id FK "-> daily_logs.id"
+    text meal_type
+    text note
     timestamptz created_at
   }
 
   meal_items {
     uuid id PK
-    uuid meal_id FK
-    uuid food_id FK
+    uuid meal_id FK "-> meals.id"
+    uuid food_id FK "-> foods.id"
     numeric qty
     int calories_total
   }
 
   water_intake {
     uuid id PK
-    uuid user_id FK
+    uuid user_id FK "-> profiles.id"
     date log_date
     int ml
   }
 
   sleep_logs {
     uuid id PK
-    uuid user_id FK
+    uuid user_id FK "-> profiles.id"
     date date_on
     time bedtime
     time wake_time

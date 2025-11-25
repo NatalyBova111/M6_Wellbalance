@@ -25,43 +25,79 @@ This MVP ensures:
 
 ---
 
-## 3. **Actions**
+## 3. Actions
 
 This section lists all user-facing and system actions for the MVP.
 
-### **3.1 Authentication**
+### 3.1 Authentication
 
-* **Sign Up** using email + password (Supabase Auth)
-* **Login** using email + password
-* **Email confirmation** flow
+* Sign Up using email + password (Supabase Auth)
+* Login using email + password
+* Email confirmation flow
 * Redirect to dashboard after login
-* Store user profile in `profiles` table
+* Store basic profile data (full name, email) in `profiles` / user metadata
 
-### **3.2 Dashboard**
+### 3.2 Dashboard
 
-* Display welcome message with user name
-* Show base sections (Meals, Water & Sleep, Dashboard)
-* Display placeholder blocks for upcoming features
+* Display a personalized welcome message with the user name
+* Show **Today’s Progress** card for the selected date:
+  * total daily calories consumed
+  * remaining calories based on the user’s daily target
+  * progress bar for daily calories
+* Show **Macronutrients Balance**:
+  * total protein, carbs, and fat for the selected day
+  * simple ring visualization and per-macro progress bars
+* Use `daily_logs` table (linked to the authenticated user) to store:
+  * `total_calories`, `protein_g`, `carbs_g`, `fat_g`
+* Use `user_targets` table to store individual daily targets and apply them on the dashboard
+* Allow switching between days (previous / next) via query parameter `?date=YYYY-MM-DD`
+* Provide a prominent **“Add Meal”** button that navigates to `/dashboard/meals`
 
-### **3.3 Foods (basic CRUD)**
+### 3.3 Foods & Meals
 
-* Form “Add food” with fields: `name`, `calories_per_serving`
-* Insert entry into `foods` table
-* List existing food entries
-* Automatically refresh dashboard (`revalidatePath('/dashboard')`)
+* Maintain a **foods library** using the `foods` table with fields:
+  * `name`, `serving_qty`, `serving_unit`
+  * `calories_per_serving`, `protein_per_serving`, `carbs_per_serving`, `fat_per_serving`
+  * `macro_category` (Protein, Carbs, Fat, Vegetables, Fruits)
+  * `is_public` and optional `owner_id` for user-specific foods
+* Provide an **Add Meal** page (`/dashboard/meals`) where the user can:
+  * browse foods grouped by macro category
+  * search foods by name
+  * open a dialog to select a portion (grams) and see calculated calories + macros
+  * add the chosen amount to the current day
+* When a meal item is added:
+  * call an API route that updates aggregated values in `daily_logs`
+  * ensure multiple additions on the same day are summed cumulatively
+* Provide an **“Add your own product”** form that:
+  * allows creating custom foods with the same macro fields
+  * stores them in the `foods` table
+  * makes them available in the Add Meal list
 
-### **3.4 UI / Component Library**
+### 3.4 UI / Component Library
 
-* Use **shadcn/ui** for input components and buttons
-* Uniform UI style across sign-in and sign-up pages
-* Tailwind + shadcn theme integration
+* Use **shadcn/ui** (Button, Input and related components) for a consistent look & feel
+* Use Tailwind CSS (with a custom theme) for layout and styling
+* Ensure sign-in, sign-up, dashboard, home, and profile pages share a consistent design system
 
-### **3.5 Developer Infrastructure**
+### 3.5 Profile & Targets
 
-* Supabase CLI installed
-* `supabase gen types typescript` configured
-* `database.types.ts` integrated into server and client Supabase clients
-* Project structured for future expansion (e.g., charts, hydration logs, sleep tracking)
+* Provide a **Profile** page where the user can:
+  * see a profile header with name, email, and initials avatar
+  * view current daily targets (calories, protein, carbs, fat)
+  * edit daily targets via a dedicated form
+* Store daily targets per user in the `user_targets` table and use them in dashboard calculations
+
+### 3.6 AI Chat Assistant (bonus MVP feature)
+
+* Provide a **Chat** page with an AI assistant interface
+* Allow the user to:
+  * send messages and receive streaming responses
+  * choose a tone (neutral, casual, formal, pirate)
+* Integrate server-side tools:
+  * `checkWeather` – fetch current weather from OpenWeatherMap
+  * `base64` – encode/decode text
+* Expose a quick access entrypoint on the home page as “AI Chat Assistant”
+
 
 ---
 
@@ -69,7 +105,7 @@ This section lists all user-facing and system actions for the MVP.
 
 The MVP is considered complete when all items below are functional and tested.
 
-### **4.1 Files / Code**
+### 4.1 Files / Code
 
 * ✔ Next.js project with App Router
 * ✔ Supabase client configured (server + browser)
@@ -77,10 +113,16 @@ The MVP is considered complete when all items below are functional and tested.
 * ✔ Sign Up page (with email confirmation)
 * ✔ Login page
 * ✔ Profiles table working
-* ✔ Dashboard page with food list
-* ✔ Food creation form
+* ✔ Dashboard page with:
+  * Today’s Progress (calories and macros)
+  * integration with `daily_logs` and `user_targets`
+* ✔ Add Meal page with:
+  * foods grouped by macro categories
+  * portion selection and macro calculation
+* ✔ Custom food creation form (Add your own product)
 * ✔ shadcn/ui installed with at least Button + Input used
-* ✔ All pages translated into English
+* ✔ All user-facing text in English
+* ✔ AI Chat Assistant page with tone selector and tools (weather, base64) — bonus
 
 ### **4.2 Documentation**
 
@@ -88,12 +130,17 @@ The MVP is considered complete when all items below are functional and tested.
 * ✔ Database Schema (`schema.md` upcoming)
 * ✔ Short notes on setup (CLI, types generation)
 
-### **4.3 Functional Criteria**
 
-* New users can sign up → email confirmation → log in → see dashboard
-* User can add foods to the database
-* Dashboard displays added entries
-* No console errors
+### 4.3 Functional Criteria
+
+* New users can sign up → confirm email → log in → see the dashboard
+* Users can set and update personal daily targets (calories and macros)
+* Users can add foods and meals, and the dashboard reflects:
+  * total daily calories
+  * macro totals (protein, carbs, fat)
+* Custom foods can be added and then used in the Add Meal flow
+* AI Chat Assistant is accessible and responds to user messages
+* No blocking console errors during normal usage
 
 ---
 
