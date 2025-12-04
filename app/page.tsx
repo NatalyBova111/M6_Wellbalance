@@ -1,5 +1,6 @@
 // app/page.tsx
 import Link from 'next/link';
+import { ChatWidget } from '@/components/chat/ChatWidget';
 
 // Data for the “Your Wellness Tools” section.
 // Each tool has a title, description, target link, and UI colors.
@@ -58,12 +59,13 @@ export default function HomePage() {
                   Welcome back!
                 </h1>
                 <p className="max-w-md text-sm text-slate-600 sm:text-base">
-                  Track your nutrition, stay hydrated, and maintain healthy sleep habits.
-                  Now you can also chat with the AI assistant for extra guidance.
+                  Track your nutrition, stay hydrated, and maintain healthy sleep
+                  habits. Now you can also chat with the AI assistant for extra
+                  guidance.
                 </p>
               </div>
 
-              {/* CTA button */}
+              {/* Main CTA button */}
               <div>
                 <Link
                   href="/dashboard"
@@ -115,26 +117,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* AI Chat Assistant quick access block */}
-        <section>
-          <Link href="/chat">
-            <div className="mt-6 flex items-center justify-between rounded-2xl bg-white/90 p-4 shadow-md ring-1 ring-emerald-100 hover:bg-emerald-50 transition">
-              <div className="flex items-center gap-3">
-                <span className="text-xl text-emerald-600">💬</span>
-                <div>
-                  <h3 className="text-sm font-semibold text-emerald-800">
-                    AI Chat Assistant
-                  </h3>
-                  <p className="text-xs text-slate-600">
-                    Tap to start chatting instantly.
-                  </p>
-                </div>
-              </div>
-
-              <span className="text-lg text-emerald-600">→</span>
-            </div>
-          </Link>
-        </section>
+        {/* Floating chat widget (round button + small chat window) */}
+        <ChatWidget />
       </main>
     </div>
   );
