@@ -1,142 +1,141 @@
-# 🌿 WellBalance — Wellness- & Ernährungstracker
+# 🌿 WellBalance — Wellness & Nutrition Tracker
 
-**WellBalance** ist eine moderne Web-App zur Erfassung von Ernährung, Kalorien, Makronährstoffen, Wasser, Schlaf und allgemeinem Wohlbefinden.  
-Das Projekt basiert auf **Next.js**, **Supabase** und einem integrierten **KI-Chatassistenten (Gemini)**.
+**WellBalance** is a modern web application for tracking nutrition, calories, macronutrients  and overall well-being.  
+The project is built with **Next.js**, **Supabase**, and an integrated **AI chat assistant (Gemini)**.
 
+![alt text](image.png)
 ---
 
-## ✨ Hauptfunktionen
+## ✨ Key Features
 
-### 🔐 Authentifizierung (Supabase)
-- Registrierung & Login per E-Mail und Passwort  
-- Benutzerprofil in `auth.users` + `profiles`  
+## 🔐 Authentication (Supabase)
+- Sign up & login with email and password  
+- User profiles stored in `auth.users` + `profiles`  
 
 ---
 
 ## 📊 Dashboard
 
-Das Dashboard enthält mehrere interaktive Diagramme und Zusammenfassungen:
+The dashboard includes several interactive charts and summaries:
 
-### **1. Today’s Progress (Tagesfortschritt)**
-- Täglicher Kalorienverbrauch  
-- Vergleich zu persönlichen Kalorienzielwerten  
-- Navigation zwischen Tagen  
+### **1. Today’s Progress**
+- Daily calorie consumption  
+- Comparison with personal calorie goals  
+- Navigation between days  
 
-### **2. Macronutrients Balance (Makronährstoff-Balance)**
-- Kreisdiagramm der Gesamtsumme aller Makros  
-- Drei Fortschrittsbalken für: **Protein**, **Kohlenhydrate**, **Fette**  
-- Abgleich mit Zielwerten aus dem Benutzerprofil  
+### **2. Macronutrients Balance**
+- Ring chart showing total macros  
+- Progress bars for: **Protein**, **Carbs**, **Fat**  
+- Based on user-defined daily goals  
 
-### **3. Weekly Calorie Trend (Kalorienverlauf der letzten 7 Tage)**
-- Liniendiagramm mit Tageswerten  
-- Tooltip mit exakten Kalorienwerten  
-- Hervorhebung des aktiven Tages  
+### **3. Weekly Calorie Trend**
+- Line chart showing the last 7 days  
+- Tooltips with exact calorie values  
+- Highlights the selected day  
 
 ---
 
 ## 🍽️ Meals & Foods
 
-### Add Meal – Lebensmittel nach Kategorien  
-Beim Hinzufügen einer Mahlzeit ist die Lebensmittelliste in Kategorien gegliedert:
+### Add Meal – categorized food items  
+Food items are organized into categories:
 
 - **Protein**  
 - **Carbs**  
 - **Fat**  
 - **Vegetables**  
 - **Fruits**  
-- **Custom Foods** (vom Benutzer hinzugefügt)
+- **Custom Foods** (user-created)
 
-Der Benutzer kann:
-- Lebensmittel auswählen  
-- Menge ändern  
-- **eigene Lebensmittelkarten anlegen**, die in seiner Datenbank gespeichert bleiben  
+Users can:
+- Select foods  
+- Adjust quantities  
+- **Create custom food cards**, saved permanently in their database  
 
 ---
 
-## 🎯 Benutzerziele (Profile)
+## 🎯 User Goals (Profile)
 
-Auf der Seite **Profile** kann der Nutzer persönliche Tagesziele festlegen:
+On the **Profile** page, users can define personal daily targets:
 
-- Kalorien  
+- Calories  
 - Protein  
-- Kohlenhydrate  
-- Fett  
+- Carbs  
+- Fat  
 
-Diese Werte steuern:
-- die visuelle Darstellung auf dem Dashboard  
-- die Berechnung der Tagesfortschritte  
-- die Antworten des KI-Assistenten  
+These values influence:
+- Dashboard visualizations  
+- Daily progress calculations  
+- AI assistant responses  
 
 ---
 
-## 🤖 KI-Chatassistent (Gemini)
+## 🤖 AI Chat Assistant (Gemini)
 
-Der intelligente Chat kann:
+The built-in AI assistant can:
 
-- Fragen zu Ernährung, Wellness und gesunder Lebensweise beantworten  
-- unterschiedliche Gesprächsstile nutzen (neutral, casual, formal, pirate)  
-- Nachrichtenverlauf automatisch lokal speichern  
+- Answer questions about nutrition, habits, and wellness  
+- Switch conversation styles (neutral, casual, formal, pirate)  
+- Save chat history locally  
 
-### 🔍 Zugriff auf echte Benutzerdaten  
-Der Chat verfügt über Tools, um Daten direkt aus Supabase abzurufen — darunter:
+### 🔍 Access to real user data  
+The assistant fetches live data from Supabase, including:
 
-**• tägliche konsumierte Kalorien**  
-**• Protein-, Kohlenhydrat- und Fettwerte**  
-**• persönliche Zielwerte**  
+- daily consumed calories  
+- protein, carb, and fat totals  
+- personal goal values  
 
-Beispiele möglicher Fragen:
-- „Wie viele Kalorien habe ich heute gegessen?“  
-- „Wie viel Protein fehlt mir noch?“  
-- „Vergleiche meine letzten 7 Tage.“  
+Example questions:
+- “How many calories have I eaten today?”  
+- “How much protein do I still need?”  
+- “Compare my past 7 days.”  
 
 ---
 
 ## 💧 Water & Sleep
 
-Die Seite **Water & Sleep** ist bereits vorgesehen, aber aktuell noch **für zukünftige Entwicklung reserviert**.
+The **Water & Sleep** page exists but is **reserved for future development**.
 
-Geplante Erweiterungen:
-- tägliche Wasseraufnahme  
-- Schlafdauer & Schlafqualität  
-- Diagramme & Trends  
-
----
-
-## 🎨 UI-Design (kurz)
-
-Erstellt in **Figma Make** mit Fokus auf Wellness-Ästhetik:
-
-- sanfte Grüntöne  
-- helle, minimalistische Komposition  
-- Font **Inter**  
-- abgerundete, ruhige UI-Elemente  
+Planned features:
+- Daily water intake tracking  
+- Sleep duration & quality  
+- Visual charts & trends  
 
 ---
 
-## 🧩 Technologiestack
+## 🎨 UI Design 
+
+Designed in **Figma Make**, inspired by wellness apps:
+
+- soft green palette  
+- minimal light interface   
+- rounded components for a calming aesthetic  
+
+---
+
+## 🧩 Tech Stack
 
 ### Frontend
-- Next.js 
+- Next.js  
 - React Server & Client Components  
 - Tailwind CSS  
-- Storybook 
+- Storybook  
 - Recharts  
 
 ### Backend
-- Supabase (Auth, PostgreSQL, RLS Policies)
-- Automatisch generierte TypeScript-Typen 
+- Supabase (Auth, PostgreSQL, RLS Policies)  
+- Auto-generated TypeScript types  
 
-### 🤖 KI
-- Google Gemini (Chatassistent in der App)
-- GitHub Copilot (Entwicklungsunterstützung)
-- OpenAI GPT (zusätzliche KI-Hilfe während der Entwicklung)
-
+### 🤖 AI
+- Google Gemini (in-app assistant)  
+- GitHub Copilot (development assistance)  
+- OpenAI GPT (additional help during development)  
 
 ---
 
-## 🗄️ Datenbankschema (Kurzfassung)
+## 🗄️ Database Schema 
 
-Wesentliche Tabellen:
+Main tables:
 - `profiles`  
 - `daily_logs`  
 - `meals`  
@@ -148,8 +147,8 @@ Wesentliche Tabellen:
 
 ---
 
-## ✍️ Autor
+## ✍️ Author
 
 **Nataly Bova**  
-Design, Entwicklung und KI-Integration  
+Design, development, and AI integration  
 GitHub: https://github.com/NatalyBova111
