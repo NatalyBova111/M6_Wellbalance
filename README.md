@@ -3,7 +3,7 @@
 **WellBalance** is a modern web application for tracking nutrition, calories, macronutrients  and overall well-being.  
 The project is built with **Next.js**, **Supabase**, and an integrated **AI chat assistant (Gemini)**.
 
-![alt text](image.png)
+![home](image.png)
 ---
 
 ## ✨ Key Features
@@ -22,16 +22,19 @@ The dashboard includes several interactive charts and summaries:
 - Daily calorie consumption  
 - Comparison with personal calorie goals  
 - Navigation between days  
+  ![dashboard1](image-1.png)
 
 ### **2. Macronutrients Balance**
 - Ring chart showing total macros  
 - Progress bars for: **Protein**, **Carbs**, **Fat**  
 - Based on user-defined daily goals  
+  ![dashboard2](image-2.png)
 
 ### **3. Weekly Calorie Trend**
 - Line chart showing the last 7 days  
 - Tooltips with exact calorie values  
 - Highlights the selected day  
+![dashboard3](image-3.png)
 
 ---
 
@@ -46,12 +49,13 @@ Food items are organized into categories:
 - **Vegetables**  
 - **Fruits**  
 - **Custom Foods** (user-created)
+![Meals1](image-4.png)
 
 Users can:
 - Select foods  
 - Adjust quantities  
 - **Create custom food cards**, saved permanently in their database  
-
+![Meals2](image-5.png)
 ---
 
 ## 🎯 User Goals (Profile)
@@ -68,6 +72,7 @@ These values influence:
 - Daily progress calculations  
 - AI assistant responses  
 
+![Profile](image-6.png)
 ---
 
 ## 🤖 AI Chat Assistant (Gemini)
@@ -89,7 +94,7 @@ Example questions:
 - “How many calories have I eaten today?”  
 - “How much protein do I still need?”  
 - “Compare my past 7 days.”  
-
+![Chat](image-7.png)
 ---
 
 ## 💧 Water & Sleep
@@ -144,6 +149,15 @@ Main tables:
 - `user_targets`  
 - `water_intake`  
 - `sleep_logs`  
+
+---
+
+## 🚀 Deployment
+
+The project is deployed on Vercel.
+
+**Production:**  
+👉 https://m6-wellbalance-git-main-bovaria111-9413s-projects.vercel.app  
 
 ---
 
